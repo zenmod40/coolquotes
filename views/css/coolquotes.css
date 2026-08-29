@@ -1,0 +1,348 @@
+/* CoolQuotes — bouton ensō et bande de papier.
+   Palette neutre et discrète : le module s'efface derrière le thème du
+   marchand. Toutes les couleurs sont regroupées ici pour être surchargées
+   facilement depuis un custom.css. */
+
+.cq {
+  --cq-paper: #faf7f1;
+  --cq-ink: #3b3a36;
+  --cq-line: rgba(59, 58, 54, 0.18);
+  --cq-accent: #7d9b76;
+  --cq-veil: rgba(59, 58, 54, 0.45);
+  /* De combien la languette se retire derrière le bord au repos. */
+  --cq-tuck: 0.55rem;
+
+  position: fixed;
+  bottom: 1.4rem;
+  left: 0;
+  /* Au-dessus des en-têtes collants des thèmes, sous les bandeaux de
+     consentement. À remonter si un thème perce le voile. */
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: min(22rem, calc(100vw - 0.7rem));
+}
+.cq--right { left: auto; right: 0; align-items: flex-end; }
+
+/* Voile : le reste de la page s'efface derrière la citation. Porté par un
+   pseudo-élément, donc aucun nœud ajouté à la page. Le z-index négatif le
+   garde dans le contexte d'empilement de .cq : au-dessus du site, sous la
+   bande. Un clic dessus a .cq pour cible, c'est ce qui permet de fermer. */
+.cq[open]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--cq-veil);
+  animation: cq-veil 0.35s ease;
+}
+@keyframes cq-veil {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Bouton et libellé ──────────────────────────────────────────── */
+.cq__toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+}
+.cq__toggle::-webkit-details-marker { display: none; }
+
+/* Un demi-cercle collé au bord : présent, sans occuper un coin de l'écran.
+   L'ensō déborde du cadre, son bord gauche coupé par celui de la fenêtre —
+   la forme reste lisible sans qu'on ait eu à dessiner un second glyphe. */
+.cq__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 1.45rem;
+  height: 2.8rem;
+  border-radius: 0 1.4rem 1.4rem 0;
+  background: var(--cq-paper);
+  color: var(--cq-accent);
+  border: 1px solid var(--cq-line);
+  border-left: 0;
+  box-shadow: 0 3px 14px rgba(59, 58, 54, 0.18);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease,
+              background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.cq__dot svg { width: 26px; height: 26px; margin-left: -7px; }
+.cq--right .cq__dot {
+  border-radius: 1.4rem 0 0 1.4rem;
+  border-left: 1px solid var(--cq-line);
+  border-right: 0;
+  justify-content: flex-end;
+}
+.cq--right .cq__dot svg { margin-left: 0; margin-right: -7px; }
+
+/* Au repos elle se tient à couvert derrière le bord, pour ne pas traîner sur
+   le texte, et ressort le temps d'un souffle avant de se remettre à l'abri.
+   Un rond pouvait enfler ; un bord ne peut que pousser. */
+.cq:not([open]) .cq__dot {
+  transform: translateX(calc(-1 * var(--cq-tuck)));
+  animation: cq-peek 7s ease-in-out infinite;
+}
+.cq--right:not([open]) .cq__dot {
+  transform: translateX(var(--cq-tuck));
+  animation-name: cq-peek-right;
+}
+
+/* Au survol elle sort entièrement, et l'encre et le papier s'inversent. */
+.cq__toggle:hover .cq__dot,
+.cq__toggle:focus-visible .cq__dot {
+  animation: none;
+  transform: translateX(0);
+  background: var(--cq-accent);
+  border-color: var(--cq-accent);
+  color: var(--cq-paper);
+  box-shadow: 0 6px 20px rgba(59, 58, 54, 0.26);
+}
+.cq__toggle:focus-visible { outline: none; }
+.cq[open] .cq__dot { transform: none; }
+
+/* Mot d'appel : caché au repos, il sort de derrière le cercle en glissant
+   quand la souris arrive. Hors du flux, pour que la zone cliquable reste le
+   cercle et non une bande invisible en travers de la page. */
+.cq__kind {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 0.55rem);
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  background: var(--cq-paper);
+  border: 1px solid var(--cq-line);
+  box-shadow: 0 4px 16px rgba(59, 58, 54, 0.14);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cq-ink);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-0.75rem, -50%);
+  transition: opacity 0.3s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cq__toggle:hover .cq__kind,
+.cq__toggle:focus-visible .cq__kind {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Dans le coin droit, il sort de l'autre côté. */
+.cq--right .cq__kind {
+  left: auto;
+  right: calc(100% + 0.55rem);
+  transform: translate(0.75rem, -50%);
+}
+.cq--right .cq__toggle:hover .cq__kind,
+.cq--right .cq__toggle:focus-visible .cq__kind { transform: translate(0, -50%); }
+
+/* une fois ouvert, l'en-tête de la bande de papier prend le relais */
+.cq[open] .cq__kind { display: none; }
+
+/* ── Bande de papier ────────────────────────────────────────────── */
+.cq__paper {
+  position: relative;
+  margin-top: 0.7rem;
+  margin-left: 0.7rem; /* la languette touche le bord, pas la bande */
+  padding: 1.15rem 1.3rem 1rem;
+  background: var(--cq-paper);
+  border: 1px solid var(--cq-line);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(59, 58, 54, 0.16);
+  animation: cq-unfold 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: top left;
+}
+.cq--right .cq__paper {
+  transform-origin: top right;
+  margin-left: 0;
+  margin-right: 0.7rem;
+}
+
+/* filet intérieur, comme sur une planche imprimée */
+.cq__paper::before {
+  content: "";
+  position: absolute;
+  inset: 0.4rem;
+  border: 1px solid var(--cq-line);
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+/* Croix de fermeture et coupure du son, en haut à droite de la bande. */
+.cq__close,
+.cq__mute {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: rgba(59, 58, 54, 0.45);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.cq__close:hover, .cq__close:focus-visible,
+.cq__mute:hover, .cq__mute:focus-visible {
+  color: var(--cq-ink);
+  background: rgba(59, 58, 54, 0.09);
+}
+
+.cq__mute { right: 2.15rem; }
+.cq__mute .cq__slash { opacity: 0; }
+.cq__mute.is-muted .cq__wave { opacity: 0; }
+.cq__mute.is-muted .cq__slash { opacity: 1; }
+
+.cq__head {
+  margin: 0 0 0.65rem;
+  padding-right: 3.4rem; /* on ne passe pas sous les boutons */
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(59, 58, 54, 0.55);
+}
+
+/* Les citations sont empilées dans une seule cellule de grille : la hauteur
+   du papier est celle de la plus longue et ne bouge plus quand on navigue. */
+.cq__slides { display: grid; }
+.cq__slide {
+  grid-area: 1 / 1;
+  margin: 0;
+  visibility: hidden;
+}
+.cq__slide.is-current { visibility: visible; }
+
+.cq__text {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--cq-ink);
+  background: none;
+  quotes: none;
+}
+.cq__author {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: 0.72rem;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(59, 58, 54, 0.5);
+}
+
+/* ── Navigation ─────────────────────────────────────────────────── */
+.cq__nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--cq-line);
+}
+.cq__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid var(--cq-line);
+  border-radius: 50%;
+  background: none;
+  color: var(--cq-ink);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.cq__arrow:hover { border-color: var(--cq-accent); color: var(--cq-accent); }
+.cq__count {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(59, 58, 54, 0.5);
+}
+
+@keyframes cq-unfold {
+  from { opacity: 0; transform: translateY(-6px) scaleY(0.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────
+   La languette est la même partout ; seuls sa hauteur sur l'écran et le
+   confort tactile changent ici. */
+@media (max-width: 575px) {
+  /* Ancré au haut, pas au bas : le slider a une hauteur fixe, alors qu'un
+     pourcentage du bas tombe ailleurs sur chaque écran. Le min() ne joue que
+     sur un écran très bas — un téléphone couché — où 220 px passeraient sous
+     la ligne de flottaison.
+
+     Ancrer par le haut supprime aussi le saut à l'ouverture : la bande se
+     déplie sous la languette au lieu de la repousser vers le haut. */
+  .cq {
+    top: min(220px, 36vh);
+    bottom: auto;
+  }
+
+  /* La part visible est mince : on élargit la cible tactile sans déplacer le
+     dessin, sinon on passe sous la taille de doigt raisonnable. */
+  .cq__toggle { padding-right: 1rem; margin-right: -1rem; }
+  .cq--right .cq__toggle {
+    padding: 0 0 0 1rem;
+    margin: 0 0 0 -1rem;
+  }
+
+  /* Le tactile n'a pas de vrai survol : l'inversion se déclencherait sur un
+     appui long. On garde le retour au doigt, sur :active. */
+  .cq__toggle:hover .cq__dot {
+    background: var(--cq-paper);
+    border-color: var(--cq-line);
+    color: var(--cq-accent);
+    box-shadow: 0 3px 14px rgba(59, 58, 54, 0.18);
+  }
+  .cq__toggle:active .cq__dot { background: var(--cq-accent); color: var(--cq-paper); }
+
+  .cq__kind { display: none; }
+  .cq__text { font-size: 0.95rem; }
+}
+
+@keyframes cq-peek {
+  0%, 80%, 100% { transform: translateX(calc(-1 * var(--cq-tuck))); }
+  87%, 93%      { transform: translateX(0); }
+}
+@keyframes cq-peek-right {
+  0%, 80%, 100% { transform: translateX(var(--cq-tuck)); }
+  87%, 93%      { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cq, .cq__dot, .cq__paper, .cq__arrow, .cq__close, .cq__mute, .cq__kind,
+  .cq[open]::before {
+    transition: none;
+    animation: none;
+  }
+  .cq__kind { transform: translate(0, -50%); }
+  .cq--right .cq__kind { transform: translate(0, -50%); }
+
+  /* Sans respiration, la languette resterait à couvert sans jamais se
+     montrer : on la laisse dehors. */
+  .cq:not([open]) .cq__dot,
+  .cq--right:not([open]) .cq__dot { transform: none; }
+}
