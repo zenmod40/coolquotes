@@ -11,6 +11,11 @@
  * It is also available through the world-wide-web at this URL:
  * https://opensource.org/licenses/OSL-3.0
  */
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Une citation : texte, auteur, ciblage par catégories, position.
  */
