@@ -133,7 +133,9 @@ sur la page de configuration. Ces appels sont anonymes, mis en cache
 vingt-quatre heures, et n'emportent aucune donnée de votre boutique, de vos
 clients ou de vos commandes. Ils échouent en silence si le réseau est coupé.
 
-Le réglage Fonctions réseau ZM40 les désactive entièrement.
+Le réglage « Vérifier les mises à jour et actualiser la liste des modules
+ZM40 », dans l'onglet Modules ZM40, les désactive entièrement ; la liste déjà
+reçue reste alors affichée telle quelle.
 
 Côté visiteur, le module ne dépose aucun cookie, ne charge aucune ressource
 externe et ne mesure rien.

@@ -215,6 +215,9 @@ class CoolQuotes extends Module
             Configuration::updateValue('COOLQUOTES_HIDE_CHECKOUT', (int) Tools::getValue('COOLQUOTES_HIDE_CHECKOUT'));
             Configuration::updateValue('COOLQUOTES_AUTO_OPEN', (int) Tools::getValue('COOLQUOTES_AUTO_OPEN'));
             Configuration::updateValue('COOLQUOTES_KEEP_DATA', (int) Tools::getValue('COOLQUOTES_KEEP_DATA'));
+            $out .= $this->displayConfirmation($this->l('Réglages enregistrés.'));
+        }
+        if (Tools::isSubmit('submitCoolQuotesNet')) {
             Configuration::updateValue('ZM40_NET_ENABLED', (int) Tools::getValue('ZM40_NET_ENABLED'));
             Zm40CommonCq::clearFeedCache();
             $out .= $this->displayConfirmation($this->l('Réglages enregistrés.'));
@@ -229,6 +232,8 @@ class CoolQuotes extends Module
                 'SELECT COUNT(*) FROM `' . _DB_PREFIX_ . 'coolquote`'
             ),
             'cq_manage_url' => $this->context->link->getAdminLink('AdminCoolQuotes'),
+            'cq_form' => $this->renderSettingsForm(),
+            'cq_form_net' => $this->renderNetForm(),
             'zm40_update' => Zm40CommonCq::checkUpdate($this->name, $this->version),
             'zm40_footer_html' => Zm40CommonCq::footer($this->displayName, $this->version, $this->name),
             'zm40_modules' => Zm40CommonCq::modulesFeed($this->name),
@@ -241,7 +246,6 @@ class CoolQuotes extends Module
 
         return $out
             . $this->display(__FILE__, 'views/templates/admin/configure_top.tpl')
-            . $this->renderSettingsForm()
             . $this->display(__FILE__, 'views/templates/admin/configure_bottom.tpl');
     }
 
@@ -294,9 +298,6 @@ class CoolQuotes extends Module
                      'desc' => $this->l('Recommandé : on ne distrait pas un client en train de commander.')],
                     ['type' => 'switch', 'label' => $this->l('Conserver les citations à la désinstallation'),
                      'name' => 'COOLQUOTES_KEEP_DATA', 'is_bool' => true, 'values' => $yesno],
-                    ['type' => 'switch', 'label' => $this->l('Fonctions réseau ZM40'),
-                     'name' => 'ZM40_NET_ENABLED', 'is_bool' => true, 'values' => $yesno,
-                     'desc' => $this->l('Vérifie qu\'une nouvelle version du module existe et affiche les autres modules ZM40. Aucune donnée de votre boutique n\'est transmise. Désactivez pour couper tout appel sortant.')],
                 ],
                 'submit' => ['title' => $this->l('Enregistrer')],
             ],
@@ -322,10 +323,36 @@ class CoolQuotes extends Module
             'COOLQUOTES_AUTO_OPEN' => Configuration::get('COOLQUOTES_AUTO_OPEN'),
             'COOLQUOTES_HIDE_CHECKOUT' => Configuration::get('COOLQUOTES_HIDE_CHECKOUT'),
             'COOLQUOTES_KEEP_DATA' => Configuration::get('COOLQUOTES_KEEP_DATA'),
-            'ZM40_NET_ENABLED' => Configuration::get('ZM40_NET_ENABLED'),
         ]];
 
         return $helper->generateForm([$fields]);
+    }
+
+    /** Onglet « Modules ZM40 » : l'interrupteur réseau, sous la liste. */
+    private function renderNetForm()
+    {
+        $helper = new HelperForm();
+        $helper->module = $this;
+        $helper->name_controller = $this->name;
+        $helper->token = Tools::getAdminTokenLite('AdminModules');
+        $helper->currentIndex = AdminController::$currentIndex . '&configure=' . $this->name;
+        $helper->submit_action = 'submitCoolQuotesNet';
+        $helper->default_form_language = (int) Configuration::get('PS_LANG_DEFAULT');
+        $helper->tpl_vars = ['fields_value' => ['ZM40_NET_ENABLED' => Zm40CommonCq::isNetEnabled() ? 1 : 0]];
+
+        return $helper->generateForm([['form' => [
+            'legend' => ['title' => $this->l('Liste des modules ZM40'), 'icon' => 'icon-globe'],
+            'input' => [[
+                'type' => 'switch', 'name' => 'ZM40_NET_ENABLED', 'is_bool' => true,
+                'label' => $this->l('Vérifier les mises à jour et actualiser la liste des modules ZM40'),
+                'desc' => $this->l('Une fois par jour au plus, une requête anonyme vers zm40.com met la liste à jour et GitHub donne la dernière version. Désactivé, la liste reste affichée telle quelle. Aucune donnée de la boutique n\'est transmise.'),
+                'values' => [
+                    ['id' => 'zm40_net_on', 'value' => 1, 'label' => $this->l('Oui')],
+                    ['id' => 'zm40_net_off', 'value' => 0, 'label' => $this->l('Non')],
+                ],
+            ]],
+            'submit' => ['title' => $this->l('Enregistrer'), 'name' => 'submitCoolQuotesNet'],
+        ]]]);
     }
 
     /* ── Front ────────────────────────────────────────────────────── */
