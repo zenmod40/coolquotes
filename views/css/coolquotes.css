@@ -236,6 +236,12 @@
   background: none;
   quotes: none;
 }
+.cq__notice {
+  margin: 0.8rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: rgba(59, 58, 54, 0.6);
+}
 .cq__author {
   display: block;
   margin-top: 0.7rem;

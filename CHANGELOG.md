@@ -5,7 +5,7 @@ Toutes les modifications notables de ce module sont consignées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 versionnage respecte [SemVer](https://semver.org/lang/fr/).
 
-## [1.0.0] - 2026-08-26
+## [1.0.0] - 2026-11-25
 
 Première publication open source.
 
@@ -19,11 +19,15 @@ Première publication open source.
 - Genre affiché au-dessus de chaque citation, et mot d'appel à côté du cercle
   tant que la bande est fermée.
 - Gestion des citations depuis le back-office : liste filtrable par genre et
-  par thème, texte multilingue, auteur, activation à l'unité, arbre de
+  par thème, texte multilingue, auteur, activation à l'unité ou par
+  sélection (afficher ou masquer un thème entier en deux clics), arbre de
   catégories.
-- Bibliothèque de 109 citations du domaine public, réparties en sept genres et
-  attribuées à 27 auteurs, chacune référencée en commentaire dans
-  `data/quotes.php`.
+- Bibliothèque de 201 citations du domaine public attribuées à 61 auteurs,
+  chacune référencée en commentaire dans `data/quotes.php` : un fonds zen de
+  107 citations affiché dès l'installation, et 94 citations de littérature
+  française en neuf thèmes (cuisine, vin, maison, lecture, voyage, jardin,
+  amour, élégance, esprit), installées masquées. Les citations du thème vin
+  portent la mention sanitaire de la loi Évin.
 - Import et export CSV au même format, avec détection du séparateur et
   conversion des fichiers encodés par un tableur.
 - Appel sonore et musique de lecture en option, désactivés par défaut,

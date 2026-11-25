@@ -67,7 +67,12 @@ class AdminCoolQuotesController extends ModuleAdminController
             'active' => ['title' => $this->l('Affichée'), 'active' => 'status', 'type' => 'bool', 'align' => 'center', 'class' => 'fixed-width-sm', 'orderby' => false],
         ];
 
+        // Filtrer la liste sur un thème puis tout cocher : un thème entier
+        // s'allume ou s'éteint en deux clics (méthodes natives d'AdminController).
         $this->bulk_actions = [
+            'enableSelection' => ['text' => $this->l('Afficher la sélection'), 'icon' => 'icon-power-off text-success'],
+            'disableSelection' => ['text' => $this->l('Masquer la sélection'), 'icon' => 'icon-power-off text-danger'],
+            'divider' => ['text' => 'divider'],
             'delete' => ['text' => $this->l('Supprimer la sélection'), 'confirm' => $this->l('Supprimer ces citations ?'), 'icon' => 'icon-trash'],
         ];
     }
@@ -135,7 +140,7 @@ class AdminCoolQuotesController extends ModuleAdminController
                     'type' => 'text',
                     'label' => $this->l('Thème'),
                     'name' => 'theme',
-                    'hint' => $this->l('Repère interne pour trier et filtrer votre liste — jamais affiché en boutique. Les citations livrées portent « the », « ambiance », « soin », « epicerie », « bienetre », « sport » ou « general ».'),
+                    'hint' => $this->l('Repère interne pour trier et filtrer votre liste — jamais affiché en boutique. Fonds zen livré : « the », « ambiance », « soin », « epicerie », « bienetre », « sport », « general ». Littérature française livrée masquée : « cuisine », « vin », « maison », « lecture », « voyage », « jardin », « amour », « elegance », « esprit ».'),
                 ],
                 [
                     'type' => 'html',

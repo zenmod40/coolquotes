@@ -22,7 +22,8 @@ d'autres. Rien ne s'ouvre tout seul, rien ne s'affiche pendant la commande.
 - Genre affiché au-dessus de chaque citation : haïku, maxime, proverbe,
   précepte, ce que vous voulez.
 - Gestion complète depuis le back-office : liste filtrable, texte multilingue,
-  auteur, genre, thème interne, activation à l'unité.
+  auteur, genre, thème interne, activation à l'unité ou par sélection — filtrez
+  sur un thème, cochez tout, et le thème entier s'affiche ou se masque.
 - Import et export CSV, dans le même format : on exporte, on modifie dans un
   tableur, on réimporte.
 - Appel sonore et musique de lecture, en option et désactivés par défaut. Tout
@@ -30,29 +31,50 @@ d'autres. Rien ne s'ouvre tout seul, rien ne s'affiche pendant la commande.
 - Jamais affiché dans le tunnel d'achat, par défaut.
 - Ouverture au clic. L'ouverture automatique existe en option, désactivée.
 - Aucune dépendance : pas de librairie JavaScript, pas de police distante. Le
-  cercle est un SVG en ligne, le script fait vingt-trois lignes.
+  cercle est un SVG en ligne, le script de navigation pèse 2,5 Ko.
 - Accessible : l'ouverture repose sur un élément `<details>` natif, donc
   utilisable au clavier et fonctionnel sans JavaScript. Les animations
   respectent `prefers-reduced-motion`.
 
 ## La bibliothèque livrée
 
-Le module installe 109 citations, réparties en sept genres et attribuées à
-27 auteurs : haïkus de Bashō, Issa, Buson, Ryōkan, Chiyo-ni et Shiki ; textes
+Le module installe 201 citations attribuées à 61 auteurs, en deux fonds.
+
+**Le fonds zen, affiché dès l'installation** : 107 citations de 28 auteurs,
+classées en sept thèmes (thé, ambiance, soin, épicerie, bien-être, sport,
+général). Haïkus de Bashō, Issa, Buson, Ryōkan, Chiyo-ni et Shiki ; textes
 zen de Dōgen, Sengcan, Huineng et Wumen ; versets du Dhammapada ; classiques
 chinois de Confucius, Laozi, Zhuangzi, Mencius, Xunzi et Sun Tzu ; préceptes
 de Miyamoto Musashi, Yagyū Munenori et Takuan Sōhō ; règles de thé de Sen no
 Rikyū ; paroles de Kabir, Ramakrishna, Vivekananda, Sri Aurobindo et Shirdi
-Sai Baba ; écrits de Gandhi ; proverbes chinois et japonais.
+Sai Baba ; écrits de Gandhi ; Guanzi ; proverbes chinois et japonais.
+
+**La littérature française, installée masquée** : 94 citations en neuf
+thèmes, pour d'autres boutiques que le registre zen — cuisine, vin, maison,
+lecture, voyage, jardin, amour et amitié, élégance, esprit. Montaigne,
+Molière, La Fontaine, Pascal, La Rochefoucauld, Voltaire, Brillat-Savarin,
+Balzac, Hugo, Baudelaire, Rimbaud, Colette et une trentaine d'autres, plus
+quelques proverbes relevés dans le Littré. Dans la liste des citations,
+filtrez sur un thème, cochez tout, puis « Afficher la sélection » : le thème
+rejoint ce qui s'affiche en boutique.
+
+Loi Évin : toute citation du thème `vin` s'affiche avec la mention « L'abus
+d'alcool est dangereux pour la santé, à consommer avec modération. », ajoutée
+automatiquement sous la citation. Rien dans ce thème n'invite à boire ; c'est
+ensuite à chaque marchand de juger ce qu'il affiche.
 
 Deux règles ont présidé à cette sélection, et elles valent aussi pour toute
 contribution.
 
 **Rien d'inventé.** Chaque entrée renvoie à un texte réel, dont la référence
-figure en commentaire dans `data/quotes.php`. Les traductions françaises sont
-originales, faites pour ce module.
+figure en commentaire dans `data/quotes.php`. Les citations françaises ont été
+retrouvées mot pour mot dans le texte de l'œuvre, sur Wikisource, et l'adresse
+de la page est donnée. Les traductions des textes asiatiques sont originales,
+faites pour ce module.
 
-**Rien sous droits.** Tous les auteurs retenus sont dans le domaine public.
+**Rien sous droits.** Tous les auteurs retenus sont dans le domaine public :
+les auteurs français sont morts avant 1956, et aucun n'est « mort pour la
+France », ce qui prolonge la protection de trente ans.
 Des auteurs plus récents, ou vivants, sont encore protégés et ne peuvent pas
 être redistribués ici — rien n'empêche un marchand de les saisir lui-même
 depuis le back-office pour sa propre boutique.

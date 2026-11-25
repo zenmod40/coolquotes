@@ -28,6 +28,10 @@ class CoolQuotes extends Module
     /** Contrôleurs où l'on n'interrompt jamais : le tunnel d'achat. */
     const CHECKOUT_CONTROLLERS = ['order', 'cart', 'orderconfirmation', 'authentication', 'registration'];
 
+    /** Thèmes livrés masqués : le vin ou l'amour n'ont pas leur place sur
+     *  toutes les boutiques. Le marchand les allume depuis la liste. */
+    const SEED_THEMES_OFF = ['cuisine', 'vin', 'maison', 'lecture', 'voyage', 'jardin', 'amour', 'elegance', 'esprit'];
+
     public function __construct()
     {
         $this->name = 'coolquotes';
@@ -161,7 +165,7 @@ class CoolQuotes extends Module
             $q->theme = $theme;
             $q->kind = $kind;
             $q->categories = '';
-            $q->active = 1;
+            $q->active = in_array($theme, self::SEED_THEMES_OFF, true) ? 0 : 1;
             $q->position = $pos++;
             foreach ($langs as $l) {
                 $q->text[(int) $l['id_lang']] = $text;
@@ -401,6 +405,8 @@ class CoolQuotes extends Module
             'cq_prev' => $this->l('Citation précédente'),
             'cq_next' => $this->l('Citation suivante'),
             'cq_close' => $this->l('Fermer'),
+            // Loi Évin : la mention sanitaire accompagne toute citation du thème vin.
+            'cq_alcohol' => $this->l('L\'abus d\'alcool est dangereux pour la santé, à consommer avec modération.'),
             'cq_mute' => $this->l('Couper ou remettre le son'),
             'cq_sound' => (int) Configuration::get('COOLQUOTES_SOUND'),
             'cq_music' => (int) Configuration::get('COOLQUOTES_MUSIC'),

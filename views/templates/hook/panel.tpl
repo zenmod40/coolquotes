@@ -38,6 +38,7 @@
           {if $cq_head}<p class="cq__head">{$cq_head|escape:'html':'UTF-8'}</p>{/if}
           <blockquote class="cq__text">{$q.text nofilter}</blockquote>
           {if $q.author}<figcaption class="cq__author">{$q.author|escape:'html':'UTF-8'}</figcaption>{/if}
+          {if $q.theme == 'vin'}<p class="cq__notice">{$cq_alcohol|escape:'html':'UTF-8'}</p>{/if}
         </figure>
       {/foreach}
     </div>

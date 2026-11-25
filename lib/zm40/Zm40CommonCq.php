@@ -93,13 +93,49 @@ class Zm40CommonCq
      */
     public static function footer($moduleName, $version, $slug)
     {
-        $url = htmlspecialchars(self::siteUrl($slug, 'footer'), ENT_QUOTES, 'UTF-8');
+        $url = htmlspecialchars(self::siteUrl($slug, 'footer', self::isFr() ? '/' : '/en/'), ENT_QUOTES, 'UTF-8');
         $a   = '<a href="' . $url . '" target="_blank" rel="noopener">';
         return '<div class="zm40-footer">'
             . htmlspecialchars($moduleName, ENT_QUOTES, 'UTF-8')
             . ' v' . htmlspecialchars($version, ENT_QUOTES, 'UTF-8')
             . ' · ' . $a . 'ZM40</a>'
-            . ' · ' . $a . 'découvrir nos modules</a>'
+            . ' · ' . $a . (self::isFr() ? 'découvrir nos modules' : 'discover our modules') . '</a>'
+            . self::charte($slug)
+            . '</div>';
+    }
+
+    /**
+     * Langue du back-office (celle de l'employé) : textes du pied de page en français, sinon en anglais.
+     *
+     * @return bool
+     */
+    private static function isFr()
+    {
+        $ctx = class_exists('Context') ? Context::getContext() : null;
+        $iso = ($ctx && isset($ctx->language->iso_code)) ? (string) $ctx->language->iso_code : 'fr';
+
+        return $iso === '' || $iso === 'fr';
+    }
+
+    /**
+     * Badge de la charte TouchWeb pour une cybersécurité responsable (ZM40 adhérent).
+     * Image embarquée dans le module (views/img/zm40/) : aucun appel externe.
+     *
+     * @return string HTML
+     */
+    public static function charte($slug)
+    {
+        $charte = '<a href="https://www.touchweb.fr/cybersecurite-prestashop/charte-cybersecurite-responsable" target="_blank" rel="noopener"';
+        $badge  = (defined('_MODULE_DIR_') ? _MODULE_DIR_ : '/modules/')
+            . basename(dirname(dirname(__DIR__))) . '/views/img/zm40/touchweb-charte.png';
+        $fr     = self::isFr();
+        $secu   = htmlspecialchars(self::siteUrl($slug, 'footer', $fr ? '/securite' : '/en/security'), ENT_QUOTES, 'UTF-8');
+        $name   = $fr ? 'charte pour une cybersécurité responsable' : 'responsible cybersecurity charter';
+        return '<div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:10px;">'
+            . $charte . ' style="border:0;"><img src="' . htmlspecialchars($badge, ENT_QUOTES, 'UTF-8')
+            . '" alt="' . ($fr ? 'Charte pour une cybersécurité responsable' : 'Responsible cybersecurity charter') . '" width="48" height="48" style="display:block;"></a>'
+            . '<span>' . ($fr ? 'Éditeur adhérent à la ' : 'Publisher signed up to the ') . $charte . '>' . $name . '</a>'
+            . ' · <a href="' . $secu . '" target="_blank" rel="noopener">' . ($fr ? 'notre politique de sécurité' : 'our security policy') . '</a></span>'
             . '</div>';
     }
 

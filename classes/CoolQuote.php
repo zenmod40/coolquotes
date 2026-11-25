@@ -64,7 +64,7 @@ class CoolQuote extends ObjectModel
     {
         $idCategory = (int) $idCategory;
         $rows = Db::getInstance()->executeS('
-            SELECT q.id_coolquote, q.categories, q.kind, ql.text, ql.author
+            SELECT q.id_coolquote, q.categories, q.kind, q.theme, ql.text, ql.author
             FROM `' . _DB_PREFIX_ . 'coolquote` q
             JOIN `' . _DB_PREFIX_ . 'coolquote_lang` ql
               ON ql.id_coolquote = q.id_coolquote AND ql.id_lang = ' . (int) $idLang . '
@@ -74,7 +74,9 @@ class CoolQuote extends ObjectModel
         foreach ((array) $rows as $r) {
             // Le gabarit sort le texte en nofilter pour honorer les <br> d'un
             // haïku : on ne laisse donc passer que ceux-là.
-            $r['text'] = strip_tags((string) $r['text'], '<br>');
+            // strip_tags garde les attributs des balises permises : un
+            // <br onmouseover=…> venu d'un CSV passerait. On les réécrit nues.
+            $r['text'] = preg_replace('/<br\b[^>]*>/i', '<br>', strip_tags((string) $r['text'], '<br>'));
             $cats = array_filter(array_map('intval', explode(',', (string) $r['categories'])));
             if (!$cats) {
                 $generic[] = $r;
