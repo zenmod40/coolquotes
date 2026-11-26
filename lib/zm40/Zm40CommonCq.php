@@ -134,7 +134,7 @@ class Zm40CommonCq
         return '<div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:10px;">'
             . $charte . ' style="border:0;"><img src="' . htmlspecialchars($badge, ENT_QUOTES, 'UTF-8')
             . '" alt="' . ($fr ? 'Charte pour une cybersécurité responsable' : 'Responsible cybersecurity charter') . '" width="48" height="48" style="display:block;"></a>'
-            . '<span>' . ($fr ? 'Éditeur adhérent à la ' : 'Publisher signed up to the ') . $charte . '>' . $name . '</a>'
+            . '<span>' . ($fr ? 'Éditeur adhérent à la ' : 'Signatory of the ') . $charte . '>' . $name . '</a>'
             . ' · <a href="' . $secu . '" target="_blank" rel="noopener">' . ($fr ? 'notre politique de sécurité' : 'our security policy') . '</a></span>'
             . '</div>';
     }

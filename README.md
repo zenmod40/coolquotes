@@ -84,6 +84,11 @@ depuis le back-office pour sa propre boutique.
 PrestaShop 1.7, 8 et 9. PHP 7.1 et supérieur. Une version pour ThirtyBees et
 PrestaShop 1.6 peut être fournie sur demande.
 
+Le module est en français et en anglais. En boutique, ce que voit le visiteur
+(bouton, flèches, fermeture, mention sanitaire) est aussi traduit en allemand,
+espagnol, italien, néerlandais, portugais et slovène. La bibliothèque livrée,
+elle, reste en français.
+
 ## Installation
 
 Depuis le back-office, Modules puis Téléverser un module, en choisissant le

@@ -5,6 +5,21 @@ Toutes les modifications notables de ce module sont consignées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 versionnage respecte [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.1] - 2026-11-26
+
+### Ajouté
+
+- Traduction anglaise complète du module, back-office compris.
+- Textes vus en boutique (bouton, flèches, fermeture, coupure du son, mention
+  sanitaire) traduits en allemand, espagnol, italien, néerlandais, portugais
+  et slovène.
+
+### Modifié
+
+- Le texte du bouton est vide par défaut : le module affiche alors « Tirer une
+  citation » dans la langue du visiteur. La mise à jour vide aussi ce réglage
+  s'il porte encore le texte livré ; un texte personnalisé n'est pas touché.
+
 ## [1.0.0] - 2026-11-25
 
 Première publication open source.

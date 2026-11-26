@@ -36,7 +36,7 @@ class CoolQuotes extends Module
     {
         $this->name = 'coolquotes';
         $this->tab = 'front_office_features';
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->author = 'ZM40';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => '9.99.99'];
@@ -96,8 +96,8 @@ class CoolQuotes extends Module
     {
         return Configuration::updateValue('COOLQUOTES_ACTIVE', 1)
             && Configuration::updateValue('COOLQUOTES_POSITION', 'bottom-left')
-            && Configuration::updateValue('COOLQUOTES_LABEL', 'Tirer une citation')
-            && Configuration::updateValue('COOLQUOTES_KIND', 'Une pensée')
+            && Configuration::updateValue('COOLQUOTES_LABEL', '') // vide : libellé traduit dans la langue du visiteur
+            && Configuration::updateValue('COOLQUOTES_KIND', $this->l('Une pensée'))
             && Configuration::updateValue('COOLQUOTES_COUNT', 8)
             // Le son est une intrusion : le marchand doit le demander.
             && Configuration::updateValue('COOLQUOTES_SOUND', 0)
@@ -273,7 +273,7 @@ class CoolQuotes extends Module
                      ], 'id' => 'id', 'name' => 'name']],
                     ['type' => 'text', 'label' => $this->l('Texte du bouton'),
                      'name' => 'COOLQUOTES_LABEL',
-                     'desc' => $this->l('Visible au survol et pour les lecteurs d\'écran.')],
+                     'desc' => $this->l('Visible au survol et pour les lecteurs d\'écran. Vide, « Tirer une citation » s\'affiche dans la langue du visiteur.')],
                     ['type' => 'text', 'label' => $this->l('Mot d\'appel'),
                      'name' => 'COOLQUOTES_KIND',
                      'desc' => $this->l('Affiché à côté du cercle, tant que la bande est fermée : « Une pensée », « Un haïku », « Inspiration »… Une fois ouverte, c\'est le genre de la citation affichée qui prend le relais. Videz le champ pour ne rien annoncer.')],
